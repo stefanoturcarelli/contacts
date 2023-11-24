@@ -62,3 +62,26 @@ function showContactAdded() {
     paragraph.remove();
   }, 1000);
 }
+
+// Function to delete contact 
+function deleteContact(contact) {
+  // Remove contact from HTML
+  contact.remove();
+  // Remove contact from contacts array
+  contactsArray = filterArray(contactsArray, contact);
+  // Decrement contacts count
+  contactsCount--;
+}
+
+// Function to display feedback when contact is deleted
+function showContactDeleted() {
+  let paragraph = document.createElement("p");
+  paragraph.classList.add("contacts-count");
+  paragraph.textContent = `Contact deleted`;
+  contactsCounter.appendChild(paragraph);
+  // Clear the paragraph after 2 seconds using setTimeout
+  setTimeout(() => {
+    paragraph.remove();
+  }, 1000);
+}
+
