@@ -32,12 +32,21 @@ onEvent("load", window, () => {
 });
 
 onEvent("click", addBtn, () => {
-  if (contactsCount <= 11 && inputField.value.trim() !== "") {
-    listContacts();
-  } else if (contactsCount > 11) {
-    contactsCounter.textContent = `You have reached the maximum number of contacts.`;
-  } else {
-    contactsCounter.textContent = `Please enter a valid contact`;
+  try {
+    if (contactsCount <= 11 && inputField.value.trim() !== "") {
+      listContacts();
+    } else if (contactsCount > 11) {
+      contactsCounter.textContent = `You have reached the maximum number of contacts.`;
+    } else {
+      throw new Error("Please enter a valid contact");
+    }
+  } catch (error) {
+    contactsCounter.textContent = `Error: ${error.message}`;
+    contactsCounter.style.backgroundColor = "#973246";
+    setTimeout(() => {
+      contactsCounter.textContent = `Number of contacts: ${contactsCount}`;
+      contactsCounter.style.backgroundColor = "#329783";
+    }, 2000);
   }
   inputField.focus();
 });
