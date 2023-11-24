@@ -19,6 +19,7 @@ const addBtn = select(".add-contact");
 const contactsContainer = select(".display-contacts .content");
 const inputName = select("#name");
 const contactsCounter = select(".contacts-counter");
+const contactDiv = selectAll(".contact");
 
 let contactsCount = 0;
 let contactsArray = [];
@@ -29,10 +30,10 @@ onEvent("click", addBtn, () => {
   let contact = new Contact(inputName.value);
 
   // Check if contacts count is less than or equal to 8 to limit contacts
-  if (contactsCount <= 8) {
+  if (contactsCount <= 11) {
     // Add contact to HTML
     addContact(contact);
-    displayContactsCount();
+    showContactAdded();
   }
 
   // Increment contacts count
@@ -42,23 +43,22 @@ onEvent("click", addBtn, () => {
   inputName.value = "";
 });
 
-// Function to add contact to HTML and display the contact
+// Function to add contact to HTML, the contacts array, and display the contact
 function addContact(contact) {
   // Add contact to HTML
   contactsContainer.innerHTML += contact.displayHTML();
   // Push the new contact to the contacts array
   contactsArray.push(contact);
-  console.log(contactsArray);
 }
 
-// Function to display the number of contacts
-function displayContactsCount() {
+// Function to display feedback when contact is added
+function showContactAdded() {
   let paragraph = document.createElement("p");
   paragraph.classList.add("contacts-count");
-  paragraph.textContent = `You have ${contactsCount} contacts.`;
+  paragraph.textContent = `Contact added`;
   contactsCounter.appendChild(paragraph);
   // Clear the paragraph after 2 seconds using setTimeout
   setTimeout(() => {
     paragraph.remove();
-  }, 2000);
+  }, 1000);
 }
