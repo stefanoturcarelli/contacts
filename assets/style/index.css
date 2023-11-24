@@ -145,6 +145,7 @@ section {
   border: 1px solid #000;
   height: 50rem;
   border-radius: 0.5rem;
+  padding: 1rem;
 }
 
 .content {
@@ -176,4 +177,22 @@ input[type="button"] {
 
 input + input {
   margin-left: 1rem;
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 0.1rem solid #000;
+  border-radius: 0.5rem;
+}
+
+.contacts-counter {
+  height: 10rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  border: 0.1rem solid #000;
+  border-radius: 0.5rem;
 }
