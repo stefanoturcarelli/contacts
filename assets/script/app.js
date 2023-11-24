@@ -49,6 +49,7 @@ onEvent("click", addBtn, () => {
     }, 2000);
   }
   inputField.focus();
+  playAddSound();
 });
 
 function listContacts() {
@@ -85,6 +86,7 @@ function listContacts() {
 
 function deleteContact() {
   contactsContainer.addEventListener("click", (e) => {
+    playPopSound();
     const contactDiv = e.target.closest(".contact-div");
     if (contactDiv) {
       contactDiv.remove();
@@ -92,4 +94,17 @@ function deleteContact() {
       contactsCounter.textContent = `Number of contacts: ${contactsCount}`;
     }
   });
+}
+
+// Trying to add sound to the add button and contact divs
+const addSound = new Audio("./assets/media/click-21156.mp3");
+
+function playAddSound() {
+  addSound.play();
+}
+
+const popSound = new Audio("./assets/media/pop-sound.mp3");
+
+function playPopSound() {
+  popSound.play();
 }
