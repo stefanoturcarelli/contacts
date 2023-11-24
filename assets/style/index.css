@@ -212,3 +212,8 @@ input + input {
   align-items: center;
   gap: 1rem;
 }
+
+.template {
+  font-size: 1.6rem;
+  font-weight: 500;
+}

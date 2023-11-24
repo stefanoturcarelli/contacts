@@ -9,6 +9,7 @@ import {
   sleep,
   randomNumber,
   filterArray,
+  create,
 } from "./utils.js";
 
 import Contact from "./Contact.js";
@@ -16,72 +17,70 @@ import Contact from "./Contact.js";
 // Get and store HTML elements
 const addBtn = select(".add-contact");
 const contactsContainer = select(".display-contacts .content");
-const inputName = select("#name");
+const inputField = select("#name");
 const contactsCounter = select(".contacts-counter");
+const contactDiv = selectAll(".contact-div");
 
 let contactsCount = 0;
 let contactsArray = [];
 
-// Add event listener to add contact button
-onEvent("click", addBtn, () => {
-  // Create new contact
-  let contact = new Contact(inputName.value);
+onEvent("load", window, () => {
+  inputField.focus();
 
-  // Check if contacts count is less than or equal to 8 to limit contacts
-  if (contactsCount <= 11) {
-    // Add contact to HTML
-    addContact(contact);
-    showContactAdded();
-  }
-
-  // Increment contacts count
-  contactsCount++;
-
-  // Clear input field
-  inputName.value = "";
+  contactsCounter.textContent = `Number of contacts: ${contactsCount}`;
+  deleteContact();
 });
 
-// Function to add contact to HTML, the contacts array, and display the contact
-function addContact(contact) {
-  // Add contact to HTML
-  contactsContainer.innerHTML += contact.displayHTML();
-  // Push the new contact to the contacts array
+onEvent("click", addBtn, () => {
+  if (contactsCount <= 11 && inputField.value.trim() !== "") {
+    listContacts();
+  } else if (contactsCount > 11) {
+    contactsCounter.textContent = `You have reached the maximum number of contacts.`;
+  } else {
+    contactsCounter.textContent = `Please enter a valid contact`;
+  }
+  inputField.focus();
+});
+
+function listContacts() {
+  let input = inputField.value.trim().split(", ");
+
+  let contact = new Contact(input[0], input[1], input[2], input[3]);
+  console.log(contact);
+
+  let contactDiv = create("div");
+  contactDiv.classList.add("contact-div");
+  contactsContainer.appendChild(contactDiv);
+
+  let contactName = create("p");
+  contactName.classList.add("contact-name");
+  contactName.textContent = `Name: ${contact.name}`;
+  contactDiv.appendChild(contactName);
+
+  let contactCity = create("p");
+  contactCity.classList.add("contact-city");
+  contactCity.textContent = `City: ${contact.city}`;
+  contactDiv.appendChild(contactCity);
+
+  let contactEmail = create("p");
+  contactEmail.classList.add("contact-email");
+  contactEmail.textContent = `Email: ${contact.email}`;
+  contactDiv.appendChild(contactEmail);
+
   contactsArray.push(contact);
+  contactsCount++;
+  inputField.value = "";
+  contactsCounter.textContent = `Number of contacts: ${contactsCount}`;
   console.log(contactsArray);
 }
 
-// Function to display feedback when contact is added
-function showContactAdded() {
-  let paragraph = document.createElement("p");
-  paragraph.classList.add("contacts-count");
-  paragraph.textContent = `Contact added`;
-  contactsCounter.appendChild(paragraph);
-  // Clear the paragraph after 2 seconds using setTimeout
-  setTimeout(() => {
-    paragraph.remove();
-  }, 1000);
-}
-
-// Add an event listener to handle click events on the contacts container
-onEvent("click", contactsContainer, (event) => {
-  const clickedElement = event.target.closest(".contact-div");
-
-  if (clickedElement) {
-    // Remove the contact from the HTML
-    clickedElement.remove();
-
-    // Find the index of the clicked contact in the array
-    const index = contactsArray.findIndex(
-      (contact) => contact.id === clickedElement.dataset.id
-    );
-
-    // Remove the contact from the contacts array
-    if (index !== -1) {
-      contactsArray.splice(index, 1);
-      console.log(contactsArray);
-
-      // Decrement contacts count
+function deleteContact() {
+  contactsContainer.addEventListener("click", (e) => {
+    const contactDiv = e.target.closest(".contact-div");
+    if (contactDiv) {
+      contactDiv.remove();
       contactsCount--;
+      contactsCounter.textContent = `Number of contacts: ${contactsCount}`;
     }
-  }
-});
+  });
+}
