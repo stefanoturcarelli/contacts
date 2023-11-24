@@ -14,12 +14,10 @@ import {
 import Contact from "./Contact.js";
 
 // Get and store HTML elements
-const form = select("form");
 const addBtn = select(".add-contact");
 const contactsContainer = select(".display-contacts .content");
 const inputName = select("#name");
 const contactsCounter = select(".contacts-counter");
-const contactDiv = selectAll(".contact");
 
 let contactsCount = 0;
 let contactsArray = [];
@@ -49,6 +47,7 @@ function addContact(contact) {
   contactsContainer.innerHTML += contact.displayHTML();
   // Push the new contact to the contacts array
   contactsArray.push(contact);
+  console.log(contactsArray);
 }
 
 // Function to display feedback when contact is added
@@ -63,16 +62,26 @@ function showContactAdded() {
   }, 1000);
 }
 
-function removeContact(contact) {
-  // Add contact to HTML
-  contactsContainer.innerHTML -= contact.displayHTML();
-  // Push the new contact to the contacts array
-  contactsArray.pop(contact);
-}
+// Add an event listener to handle click events on the contacts container
+onEvent("click", contactsContainer, (event) => {
+  const clickedElement = event.target.closest(".contact-div");
 
-onEvent("click", contactsContainer, (e) => {
-  if (e.target.classList.contains("contact")) {
-    e.target.remove();
-    contactsCount--;
+  if (clickedElement) {
+    // Remove the contact from the HTML
+    clickedElement.remove();
+
+    // Find the index of the clicked contact in the array
+    const index = contactsArray.findIndex(
+      (contact) => contact.id === clickedElement.dataset.id
+    );
+
+    // Remove the contact from the contacts array
+    if (index !== -1) {
+      contactsArray.splice(index, 1);
+      console.log(contactsArray);
+
+      // Decrement contacts count
+      contactsCount--;
+    }
   }
 });

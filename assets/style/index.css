@@ -184,7 +184,7 @@ input + input {
   margin-left: 1rem;
 }
 
-.contact {
+.contact-div {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -194,7 +194,7 @@ input + input {
   background-color: #329783;
 }
 
-.contact p span {
+.contact-div p span {
   font-weight: 700;
 }
 
