@@ -26,7 +26,6 @@ let contactsArray = [];
 
 onEvent("load", window, () => {
   inputField.focus();
-
   contactsCounter.textContent = `Number of contacts: ${contactsCount}`;
   deleteContact();
 });
